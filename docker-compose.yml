@@ -1,0 +1,27 @@
+version: '3'
+
+networks:
+  redis:
+    external: true
+
+services:
+  redis:
+    image: docker.io/library/redis:5-alpine
+    container_name: redis
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - redis
+    expose:
+      - 6379
+    ports:
+      - 6379:6379
+    volumes:
+      - ~/.docker-redis:/data
